@@ -1,0 +1,28 @@
+.wishlist-banner {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 50px;
+}
+.book {
+  display: flex;
+  align-items: end;
+}
+
+.book img {
+  width: 100%;
+}
+.banner-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+.breadcamp {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+}
+.breadcamp a {
+  text-decoration: none;
+  color: #000;
+}
