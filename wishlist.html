@@ -34,7 +34,7 @@
             <ul class="breadcamp">
               <li><a href="index.html">Home</a></li>
               <li>></li>
-              <li><a href="#">Wishlist</a></li>
+              <li><a href="wishlist.html">Wishlist</a></li>
             </ul>
           </div>
           <div class="book">
@@ -43,5 +43,146 @@
         </div>
       </div>
     </header>
+
+    <main>
+      <!-- wishlist  -->
+      <div class="container table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Book Title</th>
+              <th>ID</th>
+              <th>Author</th>
+
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="table-record-container"></tbody>
+        </table>
+        <div id="table-loader" class="table-loader-display"></div>
+      </div>
+    </main>
+
+    <script>
+      let items;
+      const recordContainer = document.getElementById("table-record-container");
+
+      // Function to show loading cards
+      const showTableLoaders = () => {
+        const loaderContainer = document.getElementById("table-loader");
+
+        // Clear any existing loaders
+        loaderContainer.innerHTML = "";
+
+        // Create 8 loader cards
+        for (let i = 0; i < 5; i++) {
+          const loaderCard = document.createElement("div");
+          loaderCard.classList.add("card-table", "is-loading");
+          loaderCard.innerHTML = `
+    
+      <div class="content">
+         
+          <h4></h4>
+      </div>`;
+
+          // Append the loader card to the loader container
+          loaderContainer.appendChild(loaderCard);
+        }
+      };
+
+      const hideTableLoaders = () => {
+        const loaderContainer = document.getElementById("table-loader");
+        loaderContainer.innerHTML = ""; // Clear the loader cards
+      };
+
+      const fetchWishListItems = async () => {
+        const wishlistItems = JSON.parse(localStorage.getItem("wishlist_item"));
+
+        const wishlistIds = wishlistItems
+          ? Object?.keys(wishlistItems)?.map(Number)
+          : [];
+        showTableLoaders();
+
+        recordContainer.innerHTML = ""; // Clear previous books
+
+        const response = await fetch(
+          `https://gutendex.com/books?ids=${wishlistIds}`
+        );
+        items = await response.json();
+        hideTableLoaders();
+
+        items?.results?.forEach((book) => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+
+              <td style="display:flex; align-items:center; gap:5px">
+
+                 <img
+                   style="height:50px; width:50px; "
+                  src=${book.formats["image/jpeg"]}
+                  alt="Frankenstein Cover"
+
+                />
+               <span> ${book.title}</span>
+                </td>
+              <td>${book.id}</td>
+              <td>${book?.authors[0]?.name}</td>
+
+              <td onclick="handleDelete(${book.id})"> <img src="./assets/image/delete.svg" alt=""></td>
+
+          `;
+
+          recordContainer.appendChild(tr);
+        });
+      };
+
+      fetchWishListItems();
+
+      const handleDelete = (id) => {
+        recordContainer.innerHTML = "";
+        let wishlistItems = JSON.parse(localStorage.getItem("wishlist_item"));
+        delete wishlistItems[id];
+
+        const wishIds = wishlistItems
+          ? Object.keys(wishlistItems).map(Number)
+          : [];
+
+        localStorage.setItem("wishlist_item", JSON.stringify(wishlistItems));
+
+        const filterItems = items?.results.filter((item) =>
+          wishIds.includes(item.id)
+        );
+
+        console.log(filterItems);
+
+        filterItems?.forEach((book) => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+
+              <td style="display:flex; align-items:center; gap:5px">
+
+                 <img
+                   style="height:50px; width:50px; "
+                  src=${book.formats["image/jpeg"]}
+                  alt="Frankenstein Cover"
+
+                />
+               <span> ${book.title}</span>
+                </td>
+              <td>${book.id}</td>
+              <td>${book?.authors[0]?.name}</td>
+
+              <td onclick="handleDelete(${book.id})"> <img src="./assets/image/delete.svg" alt=""></td>
+
+          `;
+
+          recordContainer.appendChild(tr);
+        });
+      };
+
+      showTableLoaders();
+    </script>
   </body>
 </html>

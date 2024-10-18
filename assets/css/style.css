@@ -81,8 +81,16 @@
   border-radius: 10px 10px 0 0;
   padding: 50px 70px;
   background-color: #f5f5f5;
+  position: relative;
 }
 
+.wishlistIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: block;
+  cursor: pointer;
+}
 .book-cover {
   width: 100%;
   transition: transform 0.5s ease;
@@ -159,10 +167,23 @@
   }
 }
 
+.card-table {
+  margin: 10px;
+  width: 100%;
+  background: #eae6e6;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+
+  .content {
+    padding: 20px 30px;
+  }
+}
+
 .card.is-loading {
   .image,
   h2,
   h3,
+  h4,
   p {
     background: #eee;
     background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
@@ -177,15 +198,19 @@
     border-bottom-right-radius: 0;
   }
 
-  h2 {
+  .is-loading h2 {
     height: 30px;
   }
-  h3 {
+  .is-loading h3 {
     height: 30px;
     margin-top: 20px;
   }
 
-  p {
+  .is-loading .p {
+    height: 70px;
+    margin-top: 20px;
+  }
+  .is-loading .p {
     height: 70px;
     margin-top: 20px;
   }

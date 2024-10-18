@@ -1,7 +1,7 @@
 .wishlist-banner {
   display: flex;
   justify-content: space-between;
-  padding-top: 50px;
+  padding-top: 70px;
 }
 .book {
   display: flex;
@@ -25,4 +25,43 @@
 .breadcamp a {
   text-decoration: none;
   color: #000;
+}
+
+.table {
+  width: 100%;
+}
+.table-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-container {
+  max-width: 100%;
+  overflow: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+tr:last-child {
+  border-bottom: none; /* Remove border from the last row if desired */
 }
