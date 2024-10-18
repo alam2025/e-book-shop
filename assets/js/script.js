@@ -67,7 +67,7 @@ const fetchBooks = async (page) => {
     const bookCard = document.createElement("div");
     bookCard.innerHTML = `
     
-     <div class="book-card">
+     <div  onclick="handleBookDetails(${book.id})" class="book-card">
   <div class="image-container">
     <img
       src=${book.formats["image/jpeg"]}
@@ -234,16 +234,6 @@ function showToaster(message) {
   }, 3000); // Hide the toaster after 3 seconds
 }
 
-// wistlist DB
-
-const removeFromDb = (id) => {
-  const wishListItem = getWishListItems();
-  if (id in wishListItem) {
-    delete wishListItem[id];
-    localStorage.setItem("wishlist_item", JSON.stringify(wishListItem));
-  }
-};
-
 const getWishListItems = () => {
   let wishListItem = {};
 
@@ -255,6 +245,7 @@ const getWishListItems = () => {
   return wishListItem;
 };
 
-const deleteWishListItem = () => {
-  localStorage.removeItem("wishlist_item");
+// redirect to book details
+const handleBookDetails = (id) => {
+  window.location.href = `bookdetails.html?id=${id}`;
 };

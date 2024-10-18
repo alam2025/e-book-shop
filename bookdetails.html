@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/wishlist.css" />
+    <title>E-Book | Book Details</title>
+
+    <style>
+      .book-container {
+        margin-bottom: 50px;
+      }
+
+      .book-header {
+        display: flex;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        margin-top: 50px;
+      }
+
+      .book-image {
+        overflow: hidden;
+        border-radius: 10px 10px 0 0;
+        padding: 50px 70px;
+        background-color: #f5f5f5;
+      }
+      .book-image img {
+        width: 100%;
+      }
+
+      .book-details {
+        flex: 1;
+        margin-left: 20px;
+      }
+
+      .book-title {
+        font-size: 1.7rem;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .book-author {
+        font-size: 1.2em;
+        color: #555;
+      }
+
+      .book-meta {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .meta-item {
+        display: inline-block;
+        background-color: #eee;
+        color: #555;
+        padding: 5px 10px;
+        margin-right: 10px;
+        border-radius: 5px;
+      }
+
+      .book-description {
+        margin-top: 20px;
+        line-height: 1.6;
+        color: #555;
+      }
+
+      .book-info {
+        margin-top: 20px;
+      }
+
+      .book-subjects,
+      .book-bookshelves {
+        margin-top: 10px;
+      }
+
+      .subjects-list,
+      .bookshelves-list {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .subjects-list li,
+      .bookshelves-list li {
+        background-color: #f0f0f0;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        display: inline-block;
+        border-radius: 5px;
+      }
+
+      /* Button for downloading the book */
+      .download-btn {
+        display: inline-block;
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .download-btn:hover {
+        background-color: #45a049;
+      }
+
+      @media screen and (max-width: 776px) {
+        .book-title {
+          font-size: 1.5rem;
+        }
+        .book-author {
+          font-size: 1rem;
+        }
+        .book-image {
+          display: flex;
+          justify-content: center;
+        }
+        .book-image img {
+          max-width: 250px;
+        }
+        .book-header {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- header  -->
+      <div class="navs container">
+        <h1><a href="index.html">e-Book</a></h1>
+        <nav>
+          <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+
+            <li><a href="wishlist.html">WishList</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- banner  -->
+
+      <div style="background: #d0e1e7">
+        <div class="container wishlist-banner">
+          <div class="book">
+            <img src="./assets/image/book1.png" alt="" />
+          </div>
+          <div class="banner-text">
+            <h1>Book Details</h1>
+            <ul class="breadcamp">
+              <li><a href="index.html">Home</a></li>
+              <li>></li>
+              <li><a href="#">Book details</a></li>
+            </ul>
+          </div>
+          <div class="book">
+            <img src="./assets//image/book2.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="book-container">
+        <!-- Book Header: Title, Author, Image -->
+        <div class="book-header">
+          <div class="book-image">
+            <img src="" alt="Book Cover" id="book-cover" />
+          </div>
+          <div class="book-details">
+            <h1 class="book-title" id="book-title">Loading...</h1>
+            <p class="book-author" id="book-author">Loading...</p>
+            <div class="book-meta">
+              <span class="meta-item" id="download-count">Loading...</span>
+              <span class="meta-item" id="language">Loading...</span>
+              <span class="meta-item" id="media-type">Loading...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book Description -->
+
+        <div class="book-description" id="book-description">Loading...</div>
+
+        <!-- Additional Book Information -->
+        <div class="book-info">
+          <!-- Subjects -->
+          <div class="book-subjects">
+            <h3>Subjects</h3>
+            <ul class="subjects-list" id="subjects-list">
+              Loading...
+            </ul>
+          </div>
+
+          <!-- Bookshelves -->
+          <div class="book-bookshelves">
+            <h3>Bookshelves</h3>
+            <ul class="bookshelves-list" id="bookshelves-list">
+              Loading...
+            </ul>
+          </div>
+
+          <!-- Download Button -->
+          <a href="#" class="download-btn" id="download-btn" target="_blank"
+            >Download EPUB</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const getQueryParam = (param) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      };
+
+      // Get the book ID from the URL
+      const bookId = getQueryParam("id");
+
+      // get book details
+      const fetchBookDetails = async (id) => {
+        try {
+          const response = await fetch(`https://gutendex.com/books?ids=${id}`); // Replace with your API endpoint
+          const resData = await response.json();
+          const data = resData ? resData.results[0] : [];
+
+          console.log(data);
+
+          // Populate the book details
+          document.getElementById("book-title").textContent = data.title;
+          document.getElementById(
+            "book-author"
+          ).textContent = `by ${data.authors[0].name} (${data.authors[0].birth_year} - ${data.authors[0].death_year})`;
+          document.getElementById(
+            "download-count"
+          ).textContent = `Download Count: ${data.download_count}`;
+          document.getElementById(
+            "language"
+          ).textContent = `Language: ${data.languages[0]}`;
+          document.getElementById(
+            "media-type"
+          ).textContent = `Media Type: ${data.media_type}`;
+          document.getElementById("book-cover").src =
+            data.formats["image/jpeg"];
+
+          // Description (if you have any field for this)
+          document.getElementById("book-description").textContent =
+            "Description of the book goes here"; // Replace with actual description if available in the API
+
+          // Subjects
+          const subjectsList = document.getElementById("subjects-list");
+          subjectsList.innerHTML = ""; // Clear the loading text
+          data.subjects.forEach((subject) => {
+            const li = document.createElement("li");
+            li.textContent = subject;
+            subjectsList.appendChild(li);
+          });
+
+          // Bookshelves
+          const bookshelvesList = document.getElementById("bookshelves-list");
+          bookshelvesList.innerHTML = ""; // Clear the loading text
+          data.bookshelves.forEach((bookshelf) => {
+            const li = document.createElement("li");
+            li.textContent = bookshelf;
+            bookshelvesList.appendChild(li);
+          });
+
+          // Download button
+          document.getElementById("download-btn").href =
+            data.formats["application/epub+zip"];
+        } catch (error) {
+          console.error("Error fetching book details:", error);
+        }
+      };
+
+      fetchBookDetails(bookId);
+    </script>
+  </body>
+</html>
