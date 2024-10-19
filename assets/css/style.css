@@ -318,6 +318,16 @@
 
   .banner h2 {
     font-size: 2rem;
+    z-index: 999;
+  }
+
+  .btn-shop {
+    background-color: #036280;
+    padding: 5px 15px;
+    font-size: 18px;
+  }
+  .banner-book {
+    display: none;
   }
 }
 
