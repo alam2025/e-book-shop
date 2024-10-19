@@ -115,7 +115,7 @@
 
       const hideTableLoaders = () => {
         const loaderContainer = document.getElementById("table-loader");
-        loaderContainer.innerHTML = ""; // Clear the loader cards
+        loaderContainer.style.display = "none";
       };
 
       const fetchWishListItems = async () => {
@@ -128,10 +128,16 @@
 
         recordContainer.innerHTML = ""; // Clear previous books
 
-        const response = await fetch(
-          `https://gutendex.com/books?ids=${wishlistIds}`
-        );
-        items = await response.json();
+        const response =
+          wishlistIds.length > 0
+            ? await fetch(
+                `https://gutendex.com/books?ids=${wishlistIds.join(",")}`
+              )
+            : null;
+
+        if (response) {
+          items = await response.json();
+        }
         hideTableLoaders();
 
         items?.results?.forEach((book) => {
@@ -172,8 +178,10 @@
         const wishIds = wishlistItems
           ? Object.keys(wishlistItems).map(Number)
           : [];
-        showWistListItems();
+
         localStorage.setItem("wishlist_item", JSON.stringify(wishlistItems));
+
+        showWistListItems();
 
         const filterItems = items?.results.filter((item) =>
           wishIds.includes(item.id)
@@ -211,7 +219,7 @@
 
       const showWistListItems = () => {
         const wishlistItems = JSON.parse(localStorage.getItem("wishlist_item"));
-        console.log(Object.keys(wishlistItems).length);
+
         document.getElementById("wishlist-count").innerText = wishlistItems
           ? Object.keys(wishlistItems).length
           : 0;
