@@ -199,19 +199,19 @@
     border-bottom-right-radius: 0;
   }
 
-  .is-loading h2 {
+  .content h2 {
     height: 30px;
   }
-  .is-loading h3 {
+  .content h3 {
     height: 30px;
     margin-top: 20px;
   }
 
-  .is-loading .p {
+  .content p {
     height: 70px;
     margin-top: 20px;
   }
-  .is-loading .p {
+  .content h4 {
     height: 70px;
     margin-top: 20px;
   }

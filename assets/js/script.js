@@ -54,6 +54,16 @@ const fetchBooks = async (page) => {
   const response = await fetch(`https://gutendex.com/books/?page=${page}`);
   books = await response.json();
 
+  const searchTerm = localStorage.getItem("searchTerm");
+  let filteredBooks = books.results;
+
+  if (searchTerm) {
+    document.getElementById("search-field").value = searchTerm;
+    filteredBooks = books.results.filter((book) =>
+      book.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
   // Hide loading cards after fetching data
   hideLoaders();
 
@@ -61,15 +71,16 @@ const fetchBooks = async (page) => {
   bookContainer.innerHTML = "";
   pageInfo.innerText = `Page ${currentPage} of ${totalPages}`;
 
-  books.results.forEach((book) => {
+  filteredBooks.forEach((book) => {
     const isWishList = wishlistIds.includes(book.id);
 
     const bookCard = document.createElement("div");
     bookCard.innerHTML = `
     
-     <div  onclick="handleBookDetails(${book.id})" class="book-card">
+     <div   class="book-card">
   <div class="image-container">
     <img
+    onclick="handleBookDetails(${book.id})"
       src=${book.formats["image/jpeg"]}
       alt="Frankenstein Cover"
       class="book-cover"
@@ -86,7 +97,7 @@ const fetchBooks = async (page) => {
      </button>
 
   </div>
-  <div class="book-details">
+  <div onclick="handleBookDetails(${book.id})" class="book-details">
     <h1 class="book-title">${book.title}</h1>
     <h2 class="book-author">by ${book?.authors[0]?.name}</h2>
     <p class="book-id"><strong>ID:</strong> ${book.id}</p>
@@ -138,6 +149,7 @@ fetchBooks(1);
 
 const searchBook = (e) => {
   const searchTerm = e.target.value;
+  localStorage.setItem("searchTerm", searchTerm);
   const filteredBooks = books.results.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -156,6 +168,7 @@ const searchBook = (e) => {
      <div class="book-card">
   <div class="image-container">
     <img
+    onclick="handleBookDetails(${book.id})"
       src=${book.formats["image/jpeg"]}
       alt="Frankenstein Cover"
       class="book-cover"
@@ -172,7 +185,7 @@ const searchBook = (e) => {
      </button>
 
   </div>
-  <div class="book-details">
+  <div onclick="handleBookDetails(${book.id})" class="book-details">
     <h1 class="book-title">${book.title}</h1>
     <h2 class="book-author">by ${book?.authors[0]?.name}</h2>
     <p class="book-id"><strong>ID:</strong> ${book.id}</p>
