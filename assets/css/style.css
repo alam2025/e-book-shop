@@ -341,4 +341,7 @@
   .loader-container-display {
     grid-template-columns: repeat(1, 1fr);
   }
+  .banner-book {
+    display: none;
+  }
 }
