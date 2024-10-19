@@ -135,13 +135,38 @@
   <body>
     <header>
       <!-- header  -->
-      <div class="navs container">
-        <h1><a href="index.html">e-Book</a></h1>
+      <div style="padding: 20px 0; height: 60px" class="navs container">
+        <h1><a class="logo" href="index.html">e-Book</a></h1>
         <nav>
           <ul class="menu">
             <li><a href="index.html">Home</a></li>
 
-            <li><a href="wishlist.html">WishList</a></li>
+            <li style="position: relative">
+              <a href="wishlist.html">
+                <svg
+                  width="25px"
+                  height="25px"
+                  viewBox="0 0 64 64"
+                  stroke-width="5"
+                  stroke="#000000"
+                  fill="none"
+                >
+                  <path
+                    d="M9.06,25C7.68,17.3,12.78,10.63,20.73,10c7-.55,10.47,7.93,11.17,9.55a.13.13,0,0,0,.25,0c3.25-8.91,9.17-9.29,11.25-9.5C49,9.45,56.51,13.78,55,23.87c-2.16,14-23.12,29.81-23.12,29.81S11.79,40.05,9.06,25Z"
+                  />
+                </svg>
+              </a>
+              <span
+                id="wishlist-count"
+                style="
+                  position: absolute;
+                  right: -10px;
+                  top: -10px;
+                  font-weight: 700;
+                "
+                >5</span
+              >
+            </li>
           </ul>
         </nav>
       </div>
@@ -281,6 +306,15 @@
       };
 
       fetchBookDetails(bookId);
+
+      const showWistListItems = () => {
+        const wishlistItems = JSON.parse(localStorage.getItem("wishlist_item"));
+        console.log(Object.keys(wishlistItems).length);
+        document.getElementById("wishlist-count").innerText = wishlistItems
+          ? Object.keys(wishlistItems).length
+          : 0;
+      };
+      showWistListItems();
     </script>
   </body>
 </html>

@@ -211,6 +211,7 @@ const handleId = (id) => {
   const isExist = wishListItem[id];
   if (isExist) {
     delete wishListItem[id];
+
     document.getElementById(`wished-${id}`).style.display = "none";
     document.getElementById(`not-wish-${id}`).style.display = "block";
 
@@ -223,6 +224,7 @@ const handleId = (id) => {
     });
   } else {
     wishListItem[id] = 1;
+
     document.getElementById(`wished-${id}`).style.display = "block";
     document.getElementById(`not-wish-${id}`).style.display = "none";
     Swal.fire({
@@ -235,6 +237,7 @@ const handleId = (id) => {
   }
 
   localStorage.setItem("wishlist_item", JSON.stringify(wishListItem));
+  showWistListItems();
 };
 
 const getWishListItems = () => {
@@ -253,3 +256,12 @@ const getWishListItems = () => {
 const handleBookDetails = (id) => {
   window.location.href = `bookdetails.html?id=${id}`;
 };
+
+const showWistListItems = () => {
+  const wishlistItems = JSON.parse(localStorage.getItem("wishlist_item"));
+  console.log(Object.keys(wishlistItems).length);
+  document.getElementById("wishlist-count").innerText = wishlistItems
+    ? Object.keys(wishlistItems).length
+    : 0;
+};
+showWistListItems();
