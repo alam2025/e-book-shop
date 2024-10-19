@@ -5,6 +5,7 @@ const prevButton = document.getElementById("prev-button");
 const nextButton = document.getElementById("next-button");
 const pageInfo = document.getElementById("page-info");
 const loadingElement = document.getElementById("loading");
+const genericFilterTerm = document.getElementById("genreFilter");
 
 const bookContainer = document.getElementById("book-container");
 
@@ -40,6 +41,7 @@ const hideLoaders = () => {
 // Call this function before fetching data
 showLoaders();
 
+// fetch all book primary from api
 const fetchBooks = async (page) => {
   const wishlistItems = JSON.parse(localStorage.getItem("wishlist_item"));
 
@@ -55,13 +57,25 @@ const fetchBooks = async (page) => {
   books = await response.json();
 
   const searchTerm = localStorage.getItem("searchTerm");
+  const genreValue = localStorage.getItem("genreValue");
   let filteredBooks = books.results;
 
   if (searchTerm) {
     document.getElementById("search-field").value = searchTerm;
-    filteredBooks = books.results.filter((book) =>
-      book.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    genericFilterTerm.value = genreValue ? genreValue : "";
+    filteredBooks = books.results.filter((book) => {
+      const matchesTitle = book.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesGenre =
+        genreValue === "" ||
+        book.bookshelves.some((genre) => genre === genreValue);
+      return matchesTitle && matchesGenre;
+    });
+
+    if (filteredBooks.length === 0) {
+      filteredBooks = books.results;
+    }
   }
 
   // Hide loading cards after fetching data
@@ -71,51 +85,8 @@ const fetchBooks = async (page) => {
   bookContainer.innerHTML = "";
   pageInfo.innerText = `Page ${currentPage} of ${totalPages}`;
 
-  filteredBooks.forEach((book) => {
-    const isWishList = wishlistIds.includes(book.id);
+  displayBooks(filteredBooks, wishlistIds, bookContainer);
 
-    const bookCard = document.createElement("div");
-    bookCard.innerHTML = `
-    
-     <div   class="book-card">
-  <div class="image-container">
-    <img
-    onclick="handleBookDetails(${book.id})"
-      src=${book.formats["image/jpeg"]}
-      alt="Frankenstein Cover"
-      class="book-cover"
-    />
-     <button style="border:none;" onclick="handleId(${
-       book.id
-     })" class="wishlistIcon">
-     <img id='not-wish-${
-       book.id
-     }' style="w-[20px];" src="./assets/image/wishlist.svg" alt="">
-     <img id='wished-${
-       book.id
-     }' style="w-[20px];display:none" src="./assets/image/wishlisted.svg" alt="">
-     </button>
-
-  </div>
-  <div onclick="handleBookDetails(${book.id})" class="book-details">
-    <h1 class="book-title">${book.title}</h1>
-    <h2 class="book-author">by ${book?.authors[0]?.name}</h2>
-    <p class="book-id"><strong>ID:</strong> ${book.id}</p>
-    <p class="book-genres">
-      <strong>Genres:</strong> ${book.subjects.join(", ")}
-    </p>
-  </div>
-</div>
-    
-    `;
-
-    bookContainer.appendChild(bookCard);
-
-    if (isWishList) {
-      document.getElementById(`wished-${book.id}`).style.display = "block";
-      document.getElementById(`not-wish-${book.id}`).style.display = "none";
-    }
-  });
   // Update page information
   updatePagination();
 };
@@ -147,6 +118,7 @@ nextButton.addEventListener("click", () => {
 // Initial fetch for page 1
 fetchBooks(1);
 
+// search book title
 const searchBook = (e) => {
   const searchTerm = e.target.value;
   localStorage.setItem("searchTerm", searchTerm);
@@ -160,8 +132,34 @@ const searchBook = (e) => {
     : [];
 
   bookContainer.innerHTML = "";
+  displayBooks(filteredBooks, wishlistIds, bookContainer);
+};
 
-  filteredBooks.forEach((book) => {
+// filter book by genre
+const handleSearchByGenric = (event) => {
+  const genreValue = event.target.value;
+
+  localStorage.setItem("genreValue", genreValue);
+  bookContainer.innerHTML = "";
+
+  const wishlistItems = JSON.parse(localStorage.getItem("wishlist_item"));
+
+  const wishlistIds = wishlistItems
+    ? Object?.keys(wishlistItems)?.map(Number)
+    : [];
+  // Filter books based on the selected genre
+  const filteredBooks = books.results.filter((book) => {
+    return (
+      genreValue === "" || book.bookshelves.some((genre) => genre == genreValue)
+    );
+  });
+
+  displayBooks(filteredBooks, wishlistIds, bookContainer);
+};
+
+// all books render from here
+const displayBooks = (books, ids, container) => {
+  books.forEach((book) => {
     const bookCard = document.createElement("div");
     bookCard.innerHTML = `
     
@@ -197,9 +195,9 @@ const searchBook = (e) => {
     
     `;
 
-    bookContainer.appendChild(bookCard);
+    container.appendChild(bookCard);
 
-    const isWishList = wishlistIds.includes(book.id);
+    const isWishList = ids.includes(book.id);
     if (isWishList) {
       document.getElementById(`wished-${book.id}`).style.display = "block";
       document.getElementById(`not-wish-${book.id}`).style.display = "none";
@@ -207,6 +205,7 @@ const searchBook = (e) => {
   });
 };
 
+//........... add book to wishlist  start ------------------
 const handleId = (id) => {
   let wishListItem = getWishListItems();
   const isExist = wishListItem[id];
@@ -238,15 +237,6 @@ const handleId = (id) => {
   localStorage.setItem("wishlist_item", JSON.stringify(wishListItem));
 };
 
-function showToaster(message) {
-  var toaster = document.getElementById("toaster");
-  toaster.innerText = message;
-  toaster.className = "toaster show";
-  setTimeout(function () {
-    toaster.className = toaster.className.replace("show", "");
-  }, 3000); // Hide the toaster after 3 seconds
-}
-
 const getWishListItems = () => {
   let wishListItem = {};
 
@@ -257,6 +247,7 @@ const getWishListItems = () => {
   }
   return wishListItem;
 };
+// end
 
 // redirect to book details
 const handleBookDetails = (id) => {

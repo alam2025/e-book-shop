@@ -10,6 +10,15 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>e-book | Home page</title>
+
+    <style>
+      select {
+        padding: 10px;
+        margin-right: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -45,7 +54,7 @@
 
     <!-- main body  -->
     <main class="container main">
-      <div style="margin: 100px auto">
+      <div style="margin: 60px auto">
         <div>
           <input
             type="text"
@@ -55,6 +64,20 @@
             id="search-field"
             onkeyup="searchBook(event)"
           />
+          <select id="genreFilter" onchange="handleSearchByGenric(event)">
+            <option value="">All Genres</option>
+            <option value="Horror">Horror</option>
+            <option value="Gothic Fiction">Gothic Fiction</option>
+            <option value="Browsing: Fiction">Fiction</option>
+
+            <option value="Browsing: Literature">Literature</option>
+            <option value="Movie Books">Movie Books</option>
+            <option value="Politics">Politics</option>
+            <option value="Browsing: Poetry">Poetry</option>
+            <option value="Browsing: Culture/Civilization/Society">
+              Culture/Civilization/Society
+            </option>
+          </select>
         </div>
         <!-- skeleton loader  -->
         <div id="loader-container" class="loader-container-display"></div>
